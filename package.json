@@ -1,0 +1,17 @@
+{
+  "name": "kacheck",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "main" : "node index.js"
+  },
+  "bin": {
+    "kacheck": "./index.js"
+  },
+  "author": "Juliano Ladeira",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
