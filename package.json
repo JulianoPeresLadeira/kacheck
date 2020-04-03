@@ -1,10 +1,10 @@
 {
   "name": "kacheck",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "main" : "node index.js"
+    "main": "node index.js"
   },
   "bin": {
     "kacheck": "./index.js"
