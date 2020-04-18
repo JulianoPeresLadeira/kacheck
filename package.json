@@ -1,17 +1,26 @@
 {
-  "name": "@juliano.ladeira/kacheck",
-  "version": "1.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "main": "node index.js"
-  },
-  "bin": {
-    "kacheck": "./index.js"
-  },
-  "author": "Juliano Ladeira",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.2"
-  }
+    "name": "@juliano.ladeira/kacheck",
+    "version": "1.1.0",
+    "description": "",
+    "main": "build/index.js",
+    "scripts": {
+        "main": "node index.js",
+        "test": "jest"
+    },
+    "bin": {
+        "kacheck": "./index.js"
+    },
+    "author": "Juliano Ladeira",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.19.2"
+    },
+    "devDependencies": {
+        "@types/jest": "^24.0.18",
+        "@types/moment": "^2.13.0",
+        "@types/node": "^12.7.4",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.0.2",
+        "typescript": "^3.6.2"
+    }
 }
