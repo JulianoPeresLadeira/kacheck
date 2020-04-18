@@ -1,6 +1,9 @@
 import ArgParser from "../params/arg-parser";
 import axios from 'axios';
-import { Sorting, SortingMap } from "../params/sorting.functions";
+import { Sorting } from "../params/sorting.functions";
+import { Info } from "../models/info";
+import { StructuredJson } from "../models/structured-json";
+import { Display, DisplayInfo } from "../params/display.function";
 
 export default class Kacheck {
 
@@ -14,9 +17,12 @@ export default class Kacheck {
 
     printHelp() {
 
-        type Helper = { keys: Array<string>, options: SortingMap };
+        type Helper = { keys: Array<string>, options: StructuredJson<Info<any>> };
 
-        const flagsToPrint: Array<Helper> = [{ keys: ArgParser.SORTING_KEY, options: Sorting }];
+        const flagsToPrint: Array<Helper> = [
+            { keys: ArgParser.SORTING_KEY, options: Sorting },
+            { keys: ArgParser.DISPLAY_KEY, options: Display }
+        ];
 
         flagsToPrint.forEach(
             (helper: Helper) => {
@@ -35,12 +41,13 @@ export default class Kacheck {
     async fetchDiscounts() {
         const minDiscount = this.config.minDiscount;
 
-        const transformPrice = val => val.toFixed(2).replace('.', ',')
-
         const filteringFunction = product => product.desconto > minDiscount
+
         const sortingFunction = this.params.getSorting();
-        const reducingFunction = (product) => ({ Nome: product.produto, Desconto: product.desconto, Valor: transformPrice(product.vlr_oferta) })
-        const stringifyFunction = (reducedProduct) => `${reducedProduct.Desconto}% => (R\$${reducedProduct.Valor}) ${reducedProduct.Nome}`;
+        const displayInfo: DisplayInfo = this.params.getDisplay();
+        const reducingFunction = displayInfo.func;
+        const stringifyFunction = displayInfo.stringify;
+
         const getPromotion = async () => {
             const offerResponse = await axios.get(this.config.getDiscountEndpoint);
             const campanha = offerResponse && offerResponse.data && offerResponse.data.oferta && offerResponse.data.oferta.path_json;
@@ -74,6 +81,7 @@ export default class Kacheck {
     async process() {
         this.params.hasHelpRequest() ?
             this.printHelp() :
-            await this.fetchDiscounts();
+            this.fetchDiscounts()
+                .catch((err: Error) => console.log(err.message));
     }
 }

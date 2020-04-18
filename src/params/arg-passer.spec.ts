@@ -27,7 +27,6 @@ it('should select desc sorting',
     }
 )
 
-
 it('should throw error on sorting function not understood',
     () => {
         const params = '-sort invalid_sort';
