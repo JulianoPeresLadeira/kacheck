@@ -7,7 +7,7 @@ export default class ArgParser {
 
     private argv: Array<string>;
 
-    constructor (argv) {
+    constructor(argv) {
         this.argv = argv;
     }
 
@@ -27,6 +27,7 @@ export default class ArgParser {
     }
 
     public hasHelpRequest(): boolean {
+        console.log(this.argv.findIndex(this.equalsKey(ArgParser.HELP_KEY)) >= 0);
         return this.argv.findIndex(this.equalsKey(ArgParser.HELP_KEY)) >= 0;
     }
 

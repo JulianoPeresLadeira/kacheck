@@ -12,7 +12,7 @@ export default class Kacheck {
         this.config = config;
     }
 
-    private printHelp() {
+    printHelp() {
 
         type Helper = { keys: Array<string>, options: SortingMap };
 
@@ -32,7 +32,7 @@ export default class Kacheck {
         );
     }
 
-    private async fetchDiscounts() {
+    async fetchDiscounts() {
         const minDiscount = this.config.minDiscount;
 
         const transformPrice = val => val.toFixed(2).replace('.', ',')
