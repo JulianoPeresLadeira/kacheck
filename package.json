@@ -8,7 +8,7 @@
         "test": "jest"
     },
     "bin": {
-        "kacheck": "./index.js"
+        "kacheck": "./build/index.js"
     },
     "author": "Juliano Ladeira",
     "license": "ISC",
