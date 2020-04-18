@@ -5,6 +5,7 @@
     "main": "build/index.js",
     "scripts": {
         "main": "node index.js",
+        "build": "tsc",
         "test": "jest"
     },
     "bin": {
