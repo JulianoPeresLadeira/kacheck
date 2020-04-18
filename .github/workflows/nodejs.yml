@@ -9,11 +9,6 @@ on:
   pull_request:
     branches: [ master ]
 
-dependencies:
-  pre:
-    - 
-
-
 jobs:
   build:
 
