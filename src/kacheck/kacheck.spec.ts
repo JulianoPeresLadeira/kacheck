@@ -26,3 +26,15 @@ it('should print help information',
         expect(printHelpFn).toHaveBeenCalled();
     }
 )
+
+it('should return products',
+    async () => {
+        let kacheck = new Kacheck(defaultTestConfigs);
+        const promotion = await kacheck.fetchPromotion();
+        const endpoint = kacheck.buildEndpoint(promotion);
+        const products = await kacheck.fetchProducts(endpoint);
+
+        console.log(products.length);
+        expect(true).toBe(true);
+    }
+)

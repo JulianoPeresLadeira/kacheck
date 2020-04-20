@@ -4,6 +4,7 @@ import { Sorting } from "../params/sorting.functions";
 import { Info } from "../models/info";
 import { StructuredJson } from "../models/structured-json";
 import { Display, DisplayInfo } from "../params/display.function";
+import Product from "../models/product";
 
 export default class Kacheck {
 
@@ -16,7 +17,6 @@ export default class Kacheck {
     }
 
     printHelp() {
-
         type Helper = { keys: Array<string>, options: StructuredJson<Info<any>> };
 
         const flagsToPrint: Array<Helper> = [
@@ -38,6 +38,20 @@ export default class Kacheck {
         );
     }
 
+    buildEndpoint(promotion: string): string {
+        return `${this.config.getProductEndpoint}?campanha=${promotion}&${this.config.getProductParams}`;
+    }
+
+    async fetchPromotion(): Promise<string> {
+        const offerResponse = await axios.get(this.config.getDiscountEndpoint);
+        const campanha = offerResponse && offerResponse.data && offerResponse.data.oferta && offerResponse.data.oferta.path_json;
+        return campanha;
+    }
+
+    async fetchProducts(endpoint: string): Promise<Array<Product>> {
+        return (await axios.get(endpoint)).data.produtos;
+    }
+
     async fetchDiscounts() {
         const minDiscount = this.config.minDiscount;
 
@@ -48,16 +62,7 @@ export default class Kacheck {
         const reducingFunction = displayInfo.func;
         const stringifyFunction = displayInfo.stringify;
 
-        const getPromotion = async () => {
-            const offerResponse = await axios.get(this.config.getDiscountEndpoint);
-            const campanha = offerResponse && offerResponse.data && offerResponse.data.oferta && offerResponse.data.oferta.path_json;
-            return campanha;
-        }
-        const buildEndPoint = (promotion: string) => {
-            return `${this.config.getProductEndpoint}?campanha=${promotion}&${this.config.getProductParams}`;
-        }
-
-        const promotion = await getPromotion();
+        const promotion = await this.fetchPromotion();
 
         if (promotion) {
             console.log(`Promotion found: ${promotion}`);
@@ -66,11 +71,9 @@ export default class Kacheck {
             return;
         }
 
-        const endpoint = await buildEndPoint(promotion);
-
-        const response = await axios.get(endpoint);
-        response.data
-            .produtos
+        const endpoint = this.buildEndpoint(promotion);
+        const products = await this.fetchProducts(endpoint);
+        products
             .filter(filteringFunction)
             .sort(sortingFunction)
             .map(reducingFunction)
